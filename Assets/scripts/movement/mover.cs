@@ -19,6 +19,7 @@ namespace RPG.Movement
             UpdateAnimator();
         }
         public void StartMoveAction(Vector3 destination){
+            //GetComponent<ActionScheduler>().StartAction(this);
             GetComponent<ActionScheduler>().StartAction(this);
             moveTo(destination);
         }

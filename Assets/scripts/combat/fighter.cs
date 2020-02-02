@@ -27,19 +27,38 @@ namespace RPG.Combat
                 AttackBehaviour();
             }
         }
-
+        public bool CanAttack(combatTarget combatTarget){
+            if(combatTarget == null ) return false; 
+            health targetTest = combatTarget.GetComponent<health>();
+            
+            if(combatTarget.GetComponent<health>().IsDead()){
+                
+            }
+            
+            
+            return targetTest !=null && !targetTest.IsDead();
+        }
         private void AttackBehaviour()
         {
             transform.LookAt(target.transform);
-            if(timeSinceLastAttk > TimebetweenAttacks){
-                GetComponent<Animator>().SetTrigger("attack");
+            if(timeSinceLastAttk > TimebetweenAttacks)
+            {
+                triggerAttack();
                 timeSinceLastAttk = 0f;
                 //triger hit event
             }
-            
+
         }
+
+        private void triggerAttack()
+        {
+            GetComponent<Animator>().ResetTrigger("stopAttack");
+            GetComponent<Animator>().SetTrigger("attack");
+        }
+
         //animation Event
         void Hit(){
+            if(target == null) return;
             target.takeDmg(weaponDmg);
         }
         private bool GetIsInRange()
@@ -51,10 +70,16 @@ namespace RPG.Combat
             GetComponent<ActionScheduler>().StartAction(this);
             target = CombatTarget.GetComponent<health>() ; 
         }
-        public void Cancel(){
-            GetComponent<Animator>().SetTrigger("stopAttack");
+        public void Cancel()
+        {
+            stopTrigger();
             target = null;
         }
 
+        private void stopTrigger()
+        {
+            GetComponent<Animator>().ResetTrigger("stopAttack");
+            GetComponent<Animator>().SetTrigger("stopAttack");
+        }
     }
 }

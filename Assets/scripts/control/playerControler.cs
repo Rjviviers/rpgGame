@@ -11,23 +11,23 @@ namespace RPG.Control
         {
             if(interactWithCombat()) return;
             if(interactWithMovement()) return;
-            // print("noting to do");
-            // interactWithCombat();
         }
 
         private bool interactWithCombat()
         {
            RaycastHit[] hits =  Physics.RaycastAll(GetMouseRay());
            foreach (RaycastHit hit in hits)
-           {
-               combatTarget target = hit.transform.GetComponent<combatTarget>();
-               if(target == null ) continue ; 
-               if(Input.GetMouseButtonDown(0)){
-                   GetComponent<fighter>().Attack(target);  
-               }
-               return true;
-           }
-           return false;
+           {    
+                combatTarget target = hit.transform.GetComponent<combatTarget>();
+                if(!GetComponent<fighter>().CanAttack(target))continue;
+                if(Input.GetMouseButtonDown(0)){
+                    if(GetComponent<fighter>().CanAttack(target)){
+                        GetComponent<fighter>().Attack(target); 
+                    }
+                }
+                    return true;
+                }
+                return false;
         }
 
         private bool interactWithMovement()
