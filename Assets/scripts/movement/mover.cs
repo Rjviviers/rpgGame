@@ -10,12 +10,15 @@ namespace RPG.Movement
         [SerializeField] Transform target;
         //Ray lastRay; //last ray we shot at the screen
         NavMeshAgent navMeshAgent;
+        health hp ; 
         // Update is called once per frame
         void Start(){
             navMeshAgent = GetComponent<NavMeshAgent>();
+            hp = GetComponent<health>();
         }
         void Update()
         {
+            navMeshAgent.enabled = !hp.IsDead();
             UpdateAnimator();
         }
         public void StartMoveAction(Vector3 destination){

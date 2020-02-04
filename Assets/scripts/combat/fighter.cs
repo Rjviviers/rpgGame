@@ -3,13 +3,13 @@ using RPG.Movement;
 using RPG.Core;
 namespace RPG.Combat
 {
-    public class fighter : MonoBehaviour , IAction
+    public class Fighter : MonoBehaviour , IAction
     {   
         [SerializeField] float weaponRange = 3f; 
         [SerializeField] float TimebetweenAttacks = 0.6f ;
         health target; 
         [SerializeField] float weaponDmg = 5;
-        float timeSinceLastAttk = 0;
+        float timeSinceLastAttk = Mathf.Infinity;
         
         public void Update()
         {
@@ -27,7 +27,7 @@ namespace RPG.Combat
                 AttackBehaviour();
             }
         }
-        public bool CanAttack(combatTarget combatTarget){
+        public bool CanAttack(GameObject combatTarget){
             if(combatTarget == null ) return false; 
             health targetTest = combatTarget.GetComponent<health>();
             
@@ -37,6 +37,10 @@ namespace RPG.Combat
             
             
             return targetTest !=null && !targetTest.IsDead();
+        }
+        public void Attack(GameObject CombatTarget){
+            GetComponent<ActionScheduler>().StartAction(this);
+            target = CombatTarget.GetComponent<health>() ; 
         }
         private void AttackBehaviour()
         {
@@ -66,10 +70,7 @@ namespace RPG.Combat
             return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
         }
 
-        public void Attack(combatTarget CombatTarget){
-            GetComponent<ActionScheduler>().StartAction(this);
-            target = CombatTarget.GetComponent<health>() ; 
-        }
+
         public void Cancel()
         {
             stopTrigger();

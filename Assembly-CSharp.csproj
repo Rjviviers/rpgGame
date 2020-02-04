@@ -54,12 +54,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\scripts\combat\combatTarget.cs" />
-     <Compile Include="Assets\scripts\combat\fighter.cs" />
-     <Compile Include="Assets\scripts\combat\health.cs" />
+     <Compile Include="Assets\scripts\combat\Fighter.cs" />
      <Compile Include="Assets\scripts\control\AiControler.cs" />
+     <Compile Include="Assets\scripts\control\Patrol.cs" />
      <Compile Include="Assets\scripts\control\playerControler.cs" />
      <Compile Include="Assets\scripts\core\ActionScheduler.cs" />
      <Compile Include="Assets\scripts\core\followCam.cs" />
+     <Compile Include="Assets\scripts\core\health.cs" />
      <Compile Include="Assets\scripts\core\IAction.cs" />
      <Compile Include="Assets\scripts\movement\mover.cs" />
      <None Include="Assets\Asset Packs\Animations\README - Usage Rights for these assets 1.txt" />
