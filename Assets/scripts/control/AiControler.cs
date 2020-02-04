@@ -12,13 +12,14 @@ namespace RPG.Control
         [SerializeField] float susTime =3f;//suspision time
         [SerializeField] Patrol patrolPath;
         [SerializeField] float WaypointTolarance = 1f;
-
+        [SerializeField] float DwellTime = 2f;
         Fighter figter;
         health hp; 
         GameObject player;
         Vector3 guardPosition ;
         mover Movement;
         float timeSinceLastSawPlayer = Mathf.Infinity;
+        float timeSiceAraivedAtWaypoint = Mathf.Infinity;
         int currentWaypointIndex = 0;
         public void Start(){
             figter = GetComponent<Fighter>();
@@ -36,7 +37,7 @@ namespace RPG.Control
                 timeSinceLastSawPlayer = 0;
                 AtackBehevior();
             }
-            else if(timeSinceLastSawPlayer< susTime)
+            else if(timeSinceLastSawPlayer < susTime)
             {
 
                 SusBehaviour();
@@ -45,20 +46,28 @@ namespace RPG.Control
             {
                 PatrolBehaviour();
             }
-            timeSinceLastSawPlayer += Time.deltaTime;
+           UpdateTimers();
         }
 
+        private void UpdateTimers(){
+            timeSinceLastSawPlayer += Time.deltaTime;
+            timeSiceAraivedAtWaypoint += Time.deltaTime;
+        }
         private void PatrolBehaviour()
         {
             Vector3 nextPos = guardPosition;
             if (patrolPath != null)
             {
                 if(AtWaypoint()){
+                    timeSiceAraivedAtWaypoint = 0 ;
                     CycleWaypoint();
                 }
                 nextPos = GetCurrentWaypoint();
             }
-            Movement.StartMoveAction(nextPos);
+            if(timeSiceAraivedAtWaypoint>DwellTime){
+                Movement.StartMoveAction(nextPos);
+            }
+            
         }
 
         private bool AtWaypoint()
@@ -79,7 +88,6 @@ namespace RPG.Control
 
         private void SusBehaviour()
         {
-            
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
